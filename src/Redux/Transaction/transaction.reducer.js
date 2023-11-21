@@ -1,0 +1,46 @@
+import {
+    DELETE_TRANSACTION,
+    ERROR_TRANSACTION,
+    GET_TRANSACTION,
+    GET_INDIVIDUAL_TRANSACTION,
+    LOADING_TRANSACTION,
+    SUCCESS_TRANSACTION,
+    UPDATE_TRANSACTION,
+  } from "./transaction.types";
+  
+  const initialState = {
+    loading: false,
+    error: false,
+   transactionData: [],
+   transactionIndividualData: [],
+  };
+  export const transactionReducer = (state = initialState, { type, payload }) => {
+    switch (type) {
+      case LOADING_TRANSACTION: {
+        return { ...state, loading: true, error: false };
+      }
+      case SUCCESS_TRANSACTION: {
+        return { ...state, loading: false, error: false,transactionData: payload };
+      }
+      case GET_TRANSACTION: {
+       
+        return { ...state, loading: false, error: false,transactionData: payload };
+      }
+      case GET_INDIVIDUAL_TRANSACTION: {
+        return { ...state, loading: false, error: false,transactionIndividualData: payload };
+      }
+      case UPDATE_TRANSACTION: {
+        return { ...state, loading: false, error: false,transactionData: payload };
+      }
+      case DELETE_TRANSACTION: {
+        return { ...state, loading: false, error: false,transactionData: payload };
+      }
+      case ERROR_TRANSACTION: {
+        return { ...state, loading: false, error: true,transactionData: payload};
+      }
+      default: {
+        return state;
+      }
+    }
+  };
+  

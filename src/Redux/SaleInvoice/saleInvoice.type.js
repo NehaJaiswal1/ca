@@ -1,0 +1,9 @@
+export const LOADING_SALE_INVOICE="parties/LOADING_SALE_INVOICE";
+export const SUCCESS_SALE_INVOICE="parties/SUCCESS_SALE_INVOICE";
+export const ERROR_SALE_INVOICE="parties/ERROR_SALE_INVOICE";
+
+export const GET_SALE_INVOICE="parties/GET_SALE_INVOICE";
+export const UPDATE_SALE_INVOICE="parties/UPDATE_SALE_INVOICE";
+export const DELETE_SALE_INVOICE="parties/DELETE_SALE_INVOICE";
+
+
