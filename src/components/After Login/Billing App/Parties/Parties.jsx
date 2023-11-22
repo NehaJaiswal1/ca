@@ -77,8 +77,9 @@ const Parties = () => {
 
   // console.log(":", responseData)
   useEffect(() => {
-    setFilteredData([...getPartiesData])
-  }, [getPartiesData])
+    setFilteredData(Array.isArray(getPartiesData) ? [...getPartiesData] : []);
+  }, [getPartiesData]);
+  
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
@@ -143,9 +144,10 @@ const Parties = () => {
   //       dispatch(deletePartiesAction(token,id,firmId))
   //   }
 
-  useEffect(() => {
-    dispatch(getPartiesAction(userDetails?.token, firmId));
-  }, [firmId]);
+
+useEffect(() => {
+  dispatch(getPartiesAction(userDetails?.token, firmId));
+}, [firmId]);
 
 
   // validate gst no.

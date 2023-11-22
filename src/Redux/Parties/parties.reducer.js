@@ -18,9 +18,8 @@ const initialState = {
   searchPartiesData:[],
   partyId:"",
 }
-export const partiesReducer = (state = initialState,{ type, payload }) => {
+export const partiesReducer = (state = initialState, { type, payload }) => {
   switch (type) {
-
     case LOADING_PARTIES: {
       return { ...state, loading: true, error: false };
     }
@@ -36,13 +35,12 @@ export const partiesReducer = (state = initialState,{ type, payload }) => {
     case SEARCH_PARTIES: {
       return { ...state, loading: false, error: false, searchPartiesData: payload };
     }
-    case INDUVIDUAL_PARTY:
-      return {
-          ...state,
-          loading: false, error: false, 
-          induvidualParty: payload
-      };
-    
+    case INDUVIDUAL_PARTY: {
+      return { ...state, loading: false, error: false, induvidualParty: payload };
+    }
+    // case DELETE_PARTIES: {
+    //   return { ...state, loading: false, error: false };
+    // }
     case ERROR_PARTIES: {
       return { ...state, loading: false, error: true, partiesData: payload};
     }

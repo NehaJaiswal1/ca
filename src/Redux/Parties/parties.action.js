@@ -14,8 +14,6 @@ import {
 import { LIVE_URL2 } from "../config/Commen";
 import { toast } from "react-toastify";
 
-
-
 export const getPartiesAction = (token, firmId) => (dispatch) => {
   const headers = {
     token: `${token}`,
@@ -25,8 +23,8 @@ export const getPartiesAction = (token, firmId) => (dispatch) => {
   try {
     const url = `${LIVE_URL2}/${firmId}/party`;
     axios.get(url, { headers }).then((res) => {
-      dispatch({ type: GET_PARTIES, payload: res.data });
-      console.log("abcd 1", res.data);
+      dispatch({ type: GET_PARTIES, payload: res.data.party });
+      // console.log("abcd", res.data);
     });
   } catch (error) {
     dispatch({ type: ERROR_PARTIES, payload: error });
@@ -37,7 +35,6 @@ export const getPartiesAction = (token, firmId) => (dispatch) => {
 };
 
 export const getInduvidualPartiesAction = (token, firmId , id) => (dispatch) => {
-  
   const headers = {
     token: `${token}`,
   };
@@ -45,7 +42,7 @@ export const getInduvidualPartiesAction = (token, firmId , id) => (dispatch) => 
   try {
     const url = `${LIVE_URL2}/${firmId}/party/${id}`;
     axios.get(url, { headers }).then((res) => {
-      dispatch({ type: INDUVIDUAL_PARTY, payload: res.data });
+      dispatch({ type: INDUVIDUAL_PARTY, payload: res.data.party });
       console.log("abcd", res.data);
     });
   } catch (error) {
@@ -54,8 +51,6 @@ export const getInduvidualPartiesAction = (token, firmId , id) => (dispatch) => 
 };
 
 export const postPartiesAction = (creds, token, firmId ,modal1) => (dispatch) => {
-  console.log(token)
-  console.log("hi", modal1, firmId)
   const headers = {
     token: `${token}`,
   };
@@ -72,7 +67,7 @@ export const postPartiesAction = (creds, token, firmId ,modal1) => (dispatch) =>
       }
     });
   } catch (error) {
-    console.log(error,"<<<16AABCU9603R1ZQ");
+    // console.log(error,"<<<16AABCU9603R1ZQ");
     // modal1.onClose()
     if(error.response.data?.message){
       toast.error(error.response.data?.message ?error.response.data?.message :"Please try another email")

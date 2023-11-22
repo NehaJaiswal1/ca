@@ -2,7 +2,9 @@
 import axios from "axios";
 import { LIVE_URL2 } from "../config/Commen";
 import { toast } from "react-toastify";
-import { ERROR_PARTIES_STATEMENT, GET_INDIVIDUAL_PARTIES_STATEMENT, GET_PARTIES_STATEMENT, LOADING_PARTIES_STATEMENT } from "./partystatement.types";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { ERROR_PARTIES_STATEMENT, GET_INDIVIDUAL_PARTIES_STATEMENT, GET_PARTIES_STATEMENT, LOADING_PARTIES_STATEMENT,  GET_TRANSACTIONS_FULFILLED, SET_PARTY_ID } from "./partystatement.types";
+
 
 export const getPartiesStatement = (token, firmId) => (dispatch) => {
     const headers = {
@@ -31,8 +33,8 @@ export const getIndividualPartiesStatement = (token, firmId,id) => (dispatch) =>
     try {
         const url = `${LIVE_URL2}/${firmId}/party/${id}`;
         axios.get(url, { headers }).then((res) => {
-            dispatch({ type: GET_INDIVIDUAL_PARTIES_STATEMENT, payload: res.data.party });
-            console.log("Party Statement Data: ", res.data.party);
+            dispatch({ type: GET_INDIVIDUAL_PARTIES_STATEMENT, payload: res.data });
+            console.log("Party Statement Data: ", res.data);
         });
     } catch (error) {
         dispatch({ type: ERROR_PARTIES_STATEMENT, payload: error });
@@ -64,4 +66,32 @@ export const getPartiesStatementByDate = (token, firmId, startDate, endDate) => 
     }
 };
 
-//  https://ca-api-testing.onrender.com/report/652d0f5d4115c16957111ed4/party/date?startDate=11-06-2023&endDate=11-07-2023
+
+export const setPartyId=(partyId)=>(dispatch)=>{
+    dispatch({type:SET_PARTY_ID, payload: partyId})
+}
+
+  
+
+
+export const getTransactions = (token, firmId, partyId) => async (dispatch) => {
+    const headers = {
+      token: `${token}`,
+    };
+  
+    dispatch({ type: LOADING_PARTIES_STATEMENT });
+  
+    try {
+        console.log("hi from action",partyId)
+      const url = `https://ca-api-testing.onrender.com/${firmId}/party/${partyId}/gettransactions`;
+      const response = await axios.post(url, {}, { headers });
+        
+      dispatch({ type: GET_TRANSACTIONS_FULFILLED, payload: response.data });
+      console.log('transaction data ', response.data);
+    } catch (error) {
+      dispatch({ type: ERROR_PARTIES_STATEMENT, payload: error });
+      if (error.response?.data?.message) {
+        toast.error(error.response.data.message);
+      }
+    }
+  };
