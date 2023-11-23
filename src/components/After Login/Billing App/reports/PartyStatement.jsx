@@ -86,7 +86,7 @@ const PartyStatement = () => {
 
  
  
-  console.log("anmol", selectedPartyId)
+  console.log("selectedPartyId------", selectedPartyId)
   useEffect(() => {
     const fetchData = async () => {
       try {
