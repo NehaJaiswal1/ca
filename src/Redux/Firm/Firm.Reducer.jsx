@@ -29,7 +29,6 @@ export const Firm_Reducer = (state = initialState, { type, payload }) => {
         Firm_registerData: payload,
       };
     }
-   
     case ERROR_FIRM_REGISTER: {
       return { ...state, error: true, loading: false };
     }

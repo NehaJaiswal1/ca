@@ -2,19 +2,18 @@ import React, { useState } from 'react'
 import Company_name from '../Company_name/Company_name'
 import Slidebar from '../Slidebar/Slidebar'
 import { Box, Flex, Heading, Table, TableContainer, Tbody, Td, Th, Thead, Tr, Button, Input, InputRightAddon, InputGroup, Select, Text } from '@chakra-ui/react'
-import { ChevronDownIcon, SearchIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom'
 import SaleReports from './SaleReports'
 import PurchaseReport from './PurchaseReport'
-import PartyStatement from './PartyStatement'
+import AllTransaction from './AllTransaction'
+import BillWiseProfit from './BillWiseProfit'
+import CashFlow from './CashFlow'
+
+import DayBook from './DayBook'
+
 import GSTR_1 from './GSTR_1'
 import GSTR_3B from './GSTR_3B'
 import GSTR_2 from './GSTR_2'
-import PartyProfitLoss from './PartyProfitLoss'
-
-import PartyReportByItem from './PartyReportByItem'
-import SalePurchaseByPartyReport from './SalePurchaseByParty'
-import AllPartiesReport from './AllPartiesReport'
 
 
 const Company = {
@@ -73,27 +72,20 @@ const Reports = () => {
                 return <SaleReports />
             case 'PURCHASE_REPORT':
                 return <PurchaseReport />
+            case 'ALL_TRANSACTION':
+                return <AllTransaction />
+            case 'CASHFLOW':
+                return <CashFlow />
+            case 'BILLWISE_PROFIT':
+                return <BillWiseProfit />
+            case 'DAY_BOOK':
+                return <DayBook />
             case 'GSTR-1':
                 return <GSTR_1 />
-                case 'GSTR-2':
-                    return <GSTR_2/>
+            case 'GSTR-2':
+                return <GSTR_2 />
             case 'GSTR-3B':
                 return <GSTR_3B />
-
-            case 'PARTY_STATEMENT':
-                return <PartyStatement/>
-
-            case 'PARTY_PROFITLOSS':
-                return <PartyProfitLoss/>
-
-            case 'ALL_PARTY_REPORT':
-                return <AllPartiesReport/>
-
-            case 'PARTY_REPORT_BY_ITEM':
-                return <PartyReportByItem/>
-
-            case 'SALE_PURCHASE_BY_PARTY':
-                return <SalePurchaseByPartyReport/>
         }
     }
 
@@ -136,11 +128,11 @@ const Reports = () => {
                                 <option value='SALE_SUMMARY_BY_HSN'>Sale Summary by HSN</option>
                             </optgroup>
                             <optgroup label='Party Reports'>
-                                <option value='PARTY_STATEMENT'>Party Statement</option>
-                                <option value='PARTY_PROFITLOSS'>Party Wise Profit & Loss</option>
-                                <option value='ALL_PARTY_REPORT'>All Parties Report</option>
-                                <option value='PARTY_REPORT_BY_ITEM'>Party Report by Items</option>
-                                <option value='SALE_PURCHASE_BY_PARTY'>Sale/Purchase by Party</option>
+                                <option>Party Statement</option>
+                                <option>Party Wise Profit & Loss</option>
+                                <option>All Parties Report</option>
+                                <option>Party Report by Items</option>
+                                <option>Sale/Purchase by Party</option>
                             </optgroup>
                             <optgroup label='Item/Stock Reports'>
                                 <option>Stock Summary Report</option>

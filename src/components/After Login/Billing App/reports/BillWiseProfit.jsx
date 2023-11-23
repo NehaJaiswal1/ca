@@ -4,33 +4,49 @@ import { Box, Flex, Heading, Table, TableContainer, Tbody, Td, Th, Thead, Tr, Bu
 import { ChevronDownIcon, SearchIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-    getSaleReport
-} from "../../../../Redux/SaleReport/saleReport.Action";
+import { getReport } from '../../../../Redux/Report/Report.Action';
 
 const Company = {
     name: "Company Name"
 }
 
-const SaleReports = () => {
+const calculateProfit = (item) => {
+    // Assuming you have cost and revenue properties in your data
+    const cost = 2000/* calculate cost based on your data */;
+    const revenue = item.finalAmount || 0;
+    return revenue - cost;
+};
+
+const BillWiseProfit = () => {
     const token = localStorage.getItem("token");
     const { firmId } = useSelector((store) => store.FirmRegistration);
-    // const token =
-    //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTMxMDFkNjBhNDQwOTNhYTMzMzA5NmMiLCJpYXQiOjE2OTk1MjczMjgsImV4cCI6MTY5OTYxMzcyOH0.7G1hIqk4xGgYPhu0nhVMQJsTJ-bG8S27mZoKYagEqQA"
-    // const firmId = '652d0f5d4115c16957111ed4';
+    // const token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTMxMDFkNjBhNDQwOTNhYTMzMzA5NmMiLCJpYXQiOjE2OTk1MzE4OTAsImV4cCI6MTY5OTYxODI5MH0.m2BoAkOB4KkI7nU6NcvkZ-K7YzK2Tcjt_AlHB-J4QvE"
+    //     const firmId = '652d0f5d4115c16957111ed4';
+
     const dispatch = useDispatch();
 
-    const SalesData = useSelector((state) => state.saleReportReducer.saleReportData.getAll)
-    console.log(SalesData)
-    const [filteredSalesData, setFilteredSalesData] = useState(SalesData);
+    const BillWiseProfitData = useSelector((state) => state.reportReducer.reportData?.user);//replace this
+    const [filteredBillWiseProfitData, setFilteredBillWiseProfitData] = useState(BillWiseProfitData);
 
     useEffect(() => {
-        dispatch(getSaleReport(firmId, token));
-    }, [firmId,])
+        dispatch(getReport(token, firmId));
+    }, [firmId]);
 
     useEffect(() => {
-        setFilteredSalesData(SalesData);
-    }, [SalesData]);
+        setFilteredBillWiseProfitData(BillWiseProfitData);
+    }, [BillWiseProfitData]);
+
+    useEffect(() => {
+        if (BillWiseProfitData) {
+            // Calculate profit for each item and add it to the item
+            const dataWithProfit = BillWiseProfitData.map((item) => ({
+                ...item,
+                profit: calculateProfit(item),
+            }));
+
+            setFilteredBillWiseProfitData(dataWithProfit);
+        }
+    }, [BillWiseProfitData]);
 
     const navigate = useNavigate();
 
@@ -48,9 +64,9 @@ const SaleReports = () => {
         // Define the current date
         const currentDate = new Date().toISOString().split('T')[0];
         if (selectedOption === 'default') {
-            setFilteredSalesData(SalesData);
+            setFilteredBillWiseProfitData(BillWiseProfitData);
         } else if (selectedOption === 'Custom') {
-            // For "Custom" option, do not set "filteredSalesData" here, just update the "fromDate" and "toDate" values
+            // For "Custom" option, do not set "filteredBillWiseProfitData" here, just update the "fromDate" and "toDate" values
 
         } else {
             // Map date options to their respective values
@@ -78,7 +94,7 @@ const SaleReports = () => {
             setFromDate(dateOptions[selectedOption].from);
             setToDate(dateOptions[selectedOption].to);
 
-            setFilteredSalesData(filterDataByCustomDate(dateOptions[selectedOption].from, dateOptions[selectedOption].to));
+            setFilteredBillWiseProfitData(filterDataByCustomDate(dateOptions[selectedOption].from, dateOptions[selectedOption].to));
 
         }
 
@@ -87,19 +103,19 @@ const SaleReports = () => {
     const handleFromDateChange = (e) => {
         setFromDate(e.target.value);
         if (selectedDateOption === 'Custom') {
-            setFilteredSalesData(filterDataByCustomDate(e.target.value, toDate));
+            setFilteredBillWiseProfitData(filterDataByCustomDate(e.target.value, toDate));
         }
     };
 
     const handleToDateChange = (e) => {
         setToDate(e.target.value);
         if (selectedDateOption === 'Custom') {
-            setFilteredSalesData(filterDataByCustomDate(fromDate, e.target.value));
+            setFilteredBillWiseProfitData(filterDataByCustomDate(fromDate, e.target.value));
         }
     };
 
     const filterDataByCustomDate = (startDate, endDate) => {
-        const newData = SalesData?.filter((item) => {
+        const newData = BillWiseProfitData?.filter((item) => {
             const itemDate = new Date(item.invoiceDate).toISOString().split('T')[0];
             return itemDate >= startDate && itemDate <= endDate;
         });
@@ -199,7 +215,7 @@ const SaleReports = () => {
             handleDateOptionChange({ target: { value: selectedDateOption } });
         } else {
             // Filter the data based on the search query
-            setFilteredSalesData(SalesData?.filter((data) =>
+            setFilteredBillWiseProfitData(BillWiseProfitData?.filter((data) =>
                 data.shipToCustomerName && data.shipToCustomerName.toLowerCase().includes(query)
             ));
         }
@@ -220,9 +236,9 @@ const SaleReports = () => {
     };
 
 
-    const totalTransactions = filteredSalesData?.length || 0;
-    const totalSales = filteredSalesData?.reduce((acc, data) => acc + (data.finalAmount || 0), 0) || 0;
-    const totalDue = filteredSalesData?.reduce((acc, data) => acc + (data.dueAmount || 0), 0) || 0;
+    const totalTransactions = filteredBillWiseProfitData?.length || 0;
+    const totalSales = filteredBillWiseProfitData?.reduce((acc, data) => acc + (data.profit || 0), 0) || 0;
+    const totalDue = filteredBillWiseProfitData?.reduce((acc, data) => acc + (data.dueAmount || 0), 0) || 0;
 
 
     return (
@@ -230,7 +246,7 @@ const SaleReports = () => {
 
             <Box Flex='1' padding='15px'
             >
-                <Heading size='md' mt='2'> Sale Reports</Heading>
+                <Heading size='md' mt='2'> Transaction Reports</Heading>
                 <Flex alignItems='right' position='absolute' right="230" top="140">
                     <Button fontSize={"10px"} bg={"blue.400"} marginLeft="10px">Print</Button>
                     <Button fontSize={"10px"} bg={"blue.400"} marginLeft="10px">Excel</Button>
@@ -249,7 +265,7 @@ const SaleReports = () => {
                         value={selectedDateOption}
                         onChange={handleDateOptionChange}
                     >
-                        <option value="default">All Sales</option>
+                        <option value="default">All </option>
                         <option value="Today">Today</option>
                         <option value="This week">This Week</option>
                         <option value="This Month">This Month</option>
@@ -318,7 +334,7 @@ const SaleReports = () => {
                         <Text fontSize='20px' mt='-2'>{totalTransactions}</Text>
                     </Box>
                     <Box border='0.1px solid lightgray' boxShadow='rgba(149, 157, 165, 0.2) 0px 8px 24px' ml='4' height='80px' width='100%' p='2'>
-                        <Text>Total Sale</Text>
+                        <Text>Total Profit</Text>
                         <Text fontSize='20px' mt='-2'> {totalSales} ₹</Text>
                     </Box>
                     <Box border='0.1px solid lightgray' boxShadow='rgba(149, 157, 165, 0.2) 0px 8px 24px' ml='4' height='80px' width='100%' p='2'>
@@ -343,14 +359,14 @@ const SaleReports = () => {
                                     Amount
                                 </Th>
                                 <Th style={{ border: '1px solid gray' }}>Balance</Th>
-                                <Th style={{ border: '1px solid gray' }}>Due Date</Th>
+                                <Th style={{ border: '1px solid gray' }}>Profit</Th>
                                 <Th style={{ border: '1px solid gray' }} colSpan={2}>Actions</Th>
 
                             </Tr>
                         </Thead>
                         <Tbody>
-                            {filteredSalesData?.map((data) => (
-                                <Tr key={data._id}  style={{ cursor: 'pointer' }}
+                            {filteredBillWiseProfitData?.map((data) => (
+                                <Tr key={data._id} style={{ cursor: 'pointer' }}
                                 >
                                     <Td style={{ border: '1px solid gray' }} onClick={() => handleRowClick(data.invoiceNo)}>
                                         {data.invoiceNo}</Td>
@@ -358,7 +374,7 @@ const SaleReports = () => {
                                     {/* <Td style={{border:'1px solid gray'}}></Td> */}
                                     <Td style={{ border: '1px solid gray' }} onClick={() => handleRowClick(data.invoiceNo)}>{data.finalAmount} ₹</Td>
                                     <Td style={{ border: '1px solid gray' }} onClick={() => handleRowClick(data.invoiceNo)}>{data.dueAmount} </Td>
-                                    <Td style={{ border: '1px solid gray' }} onClick={() => handleRowClick(data.invoiceNo)}>{new Date(data.dueDate).toLocaleDateString()}
+                                    <Td style={{ border: '1px solid gray' }} onClick={() => handleRowClick(data.invoiceNo)}>{data.profit}
                                     </Td>
                                     <Td onClick={() => handleEditClick(data.invoiceNo)} style={{ border: '1px solid gray' }}
                                     >
@@ -381,4 +397,4 @@ const SaleReports = () => {
     )
 }
 
-export default SaleReports
+export default BillWiseProfit

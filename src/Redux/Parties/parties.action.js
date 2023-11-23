@@ -50,7 +50,7 @@ export const getInduvidualPartiesAction = (token, firmId , id) => (dispatch) => 
   }
 };
 
-export const postPartiesAction = (creds, token, firmId ,modal1) => (dispatch) => {
+export const postPartiesAction = (creds, token, firmId) => (dispatch) => {
   const headers = {
     token: `${token}`,
   };
@@ -60,21 +60,16 @@ export const postPartiesAction = (creds, token, firmId ,modal1) => (dispatch) =>
     axios.post(url, creds, { headers }).then((res) => {
       dispatch({ type: SUCCESS_PARTIES, payload: res.data });
       // console.log(res);
-      if (res.status === 201||200) {
-        toast.success("party register success");
-        modal1.onClose()
+      if (res.status === 201) {
+        alert("party register success");
         dispatch(getPartiesAction(token, firmId));
       }
     });
   } catch (error) {
-    // console.log(error,"<<<16AABCU9603R1ZQ");
-    // modal1.onClose()
-    if(error.response.data?.message){
-      toast.error(error.response.data?.message ?error.response.data?.message :"Please try another email")
-    }else{
-      toast.error(error?.message)  
-    }
     dispatch({ type: ERROR_PARTIES, payload: error });
+    if(error.response.data?.message){
+      toast.error(error.response.data?.message)
+    }
   }
 };
 

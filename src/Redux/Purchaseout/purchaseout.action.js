@@ -9,7 +9,7 @@ import {
 } from "./purchaseout.types";
 import { LIVE_URL2 } from "../config/Commen";
 import { toast } from "react-toastify";
- const  userDetails =  JSON.parse(sessionStorage.getItem("companyDetails")) ?JSON.parse(sessionStorage.getItem("companyDetails")):null
+ const  userDetails =  JSON.parse(sessionStorage.getItem("userDetails")) ?JSON.parse(sessionStorage.getItem("userDetails")):null
 
 
 export const getPurchaseOutAction = (token, firmId) => (dispatch) => {

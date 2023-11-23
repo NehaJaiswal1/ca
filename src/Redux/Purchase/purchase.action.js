@@ -11,15 +11,16 @@ import {
 import { LIVE_URL2 } from "../config/Commen";
 import { toast } from "react-toastify";
 
-export const getPurchaseAction = (token) => (dispatch) => {
-    console.log("hi")
+
+// ================================================================================
+export const getPurchaseAction = (token,firmId) => (dispatch) => {
     const headers = {
         token: `${token}`,
     };
     dispatch({ type: LOADING_PURCHASE });
     try {
         // const url = `${LIVE_URL2}/purchase/${firmId}/purchase`;
-        const url = `${LIVE_URL2}/addPurchase/purchase`;
+        const url = `${LIVE_URL2}/addPurchase/purchase/${firmId}`;
         axios.get(url, { headers }).then((res) => {
             console.log("🚀 ~ file: purchase.action.js:19 ~ axios.get ~ res:", res)
             dispatch({ type: SUCCESS_PURCHASE, payload: res.data });
@@ -30,7 +31,7 @@ export const getPurchaseAction = (token) => (dispatch) => {
     }
 };
 
-export const getInduvidualPurchaseAction = (token, id) => (dispatch) => {
+export const getInduvidualPurchaseAction = (token,firmId, id) => (dispatch) => {
     const headers = {
       token: `${token}`,
     };
@@ -54,7 +55,7 @@ export const getInduvidualPurchaseAction = (token, id) => (dispatch) => {
     dispatch({ type: LOADING_PURCHASE });
     try {
         // const url = `${LIVE_URL2}/purchase/insertpurchase/${firmId}`;
-        const url = `${LIVE_URL2}/addPurchase/purchase`;
+        const url = `${LIVE_URL2}/addPurchase/purchase/${firmId}`;
         axios.post(url, creds, { headers }).then((res) => {
             dispatch({ type: SUCCESS_PURCHASE, payload: res.data });
             console.log(res);
@@ -110,5 +111,22 @@ export const deletePurchaseAction = (token, id, firmId) => (dispatch) => {
     }
 };
 
+// ================================================================================================================
 
-
+// export const getPurchaseAction = (token,firmId) => (dispatch) => {
+//     const headers = {
+//         token: `${token}`,
+//     };
+//     dispatch({ type: LOADING_PURCHASE });
+//     try {
+//         // const url = `${LIVE_URL2}/purchase/${firmId}/purchase`;
+//         const url = `${LIVE_URL2}/addPurchase/purchase/${firmId}`;
+//         axios.get(url, { headers }).then((res) => {
+//             console.log("🚀 ~ file: purchase.action.js:19 ~ axios.get ~ res:", res)
+//             dispatch({ type: SUCCESS_PURCHASE, payload: res.data });
+//         });
+//     } catch (error) {
+//         console.log(error);
+//         dispatch({ type: ERROR_PURCHASE, payload: error });
+//     }
+// };

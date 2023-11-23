@@ -11,12 +11,14 @@ import { categoryReducer } from "../Redux/Category/category.reducer";
 import { invoiceReducer } from "../Redux/Invoice/invoice.reducer";
 import { purchaseReducer } from "../Redux/Purchase/purchase.reducer";
 import { purchaseOutReducer } from "../Redux/Purchaseout/purchaseout.reducer";
-import { partystatementReducer } from "../Redux/Partystatement/partystatement.reducer";
-import { partyProfitLossReducer } from "../Redux/PartyProfitLoss/partyprofitloss.reducer";
-import { allpartiesReducer } from "../Redux/AllPartiesReport/allparties.reducer";
-import { partyReportByReducer } from "../Redux/PartyReportByItem/partyreportbyitem.reducer";
-import { salepurchasebypartyReducer } from "../Redux/SalePurchaseBYParty/salepurchasebyparty.reducer";
-import {transactionReducer} from '../Redux/Transaction/transaction.reducer'
+import { purchaseOrderReducer } from "../Redux/Purchaseorder/purchaseorder.reducer";
+import { purchaseReturnReducer } from "../Redux/PurchaseReturn/purchaseReturn.reducer";
+import { saleReportReducer } from "../Redux/SaleReport/saleReport.reducer";
+import { purchaseReportReducer } from "../Redux/PurchaseReport/PurchaseReport.reducer";
+import { reportReducer } from "../Redux/Report/Report.reducer";
+
+
+
 
 const rootReducer = combineReducers({
     Auth: Auth_Reducer,
@@ -25,17 +27,16 @@ const rootReducer = combineReducers({
     FirmRegistration: Firm_Reducer,
     Vendor: Vendor_Reducer,
     partiesReducer: partiesReducer,
-    partystatementReducer: partystatementReducer,
     stockReducer: stockReducer,
-    categoryReducer:categoryReducer,
-    invoiceReducer:invoiceReducer,
-    purchaseReducer:purchaseReducer,
-    purchaseoutReducer:purchaseOutReducer,
-    partyProfitLossReducer: partyProfitLossReducer,
-    allpartiesReducer: allpartiesReducer,
-    partyReportByReducer: partyReportByReducer,
-    salepurchasebypartyReducer: salepurchasebypartyReducer,
-    transactionReducer: transactionReducer
+    categoryReducer: categoryReducer,
+    invoiceReducer: invoiceReducer,
+    purchaseReducer: purchaseReducer,
+    purchaseoutReducer: purchaseOutReducer,
+    purchaseorderReducer: purchaseOrderReducer,
+    purchaseReturn: purchaseReturnReducer,
+    saleReportReducer: saleReportReducer,
+    purchaseReportReducer: purchaseReportReducer,
+    reportReducer: reportReducer
 
 })
 export const store = legacy_createStore(rootReducer, applyMiddleware(thunk));

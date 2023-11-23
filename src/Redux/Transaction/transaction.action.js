@@ -3,7 +3,6 @@ import {
     DELETE_TRANSACTION,
   ERROR_TRANSACTION,
   GET_TRANSACTION,
-  GET_INDIVIDUAL_TRANSACTION,
   LOADING_TRANSACTION,
   SUCCESS_TRANSACTION,
   UPDATE_TRANSACTION,
@@ -31,37 +30,17 @@ export const postTransactionAction = (creds,token) => (dispatch) => {
   }
 };
 
-// /:firmId/party/:partyId/gettransactions
 
-export const getTransactionAction = (token, firmId) => (dispatch) => {
+export const getTransactionAction = (token) => (dispatch) => {
     const headers={
         "token":`${token}`
     }
     dispatch({ type: LOADING_TRANSACTION });
     try {
-      console.log("hello")
-      const url=`${LIVE_URL2}/${firmId}/party`
+      const url=`${LIVE_URL2}/party`
       axios.get(url,{ headers }).then((res) => {
         dispatch({ type: GET_TRANSACTION, payload: res.data });
-        console.log("getTransactionAction", res.data );
-       
-      });
-    } catch (error) {
-      console.log(error);
-      dispatch({ type: ERROR_TRANSACTION, payload: error });
-    }
-  };
-
-  export const getIndividualTransactionAction = (token, firmId) => (dispatch) => {
-    const headers={                  
-        "token":`${token}`
-    }
-    dispatch({ type: LOADING_TRANSACTION });
-    try {
-      const url=`${LIVE_URL2}/${firmId}/party`
-      axios.get(url,{ headers }).then((res) => {
-        dispatch({ type: GET_INDIVIDUAL_TRANSACTION, payload: res.data });
-        console.log("getIndividualTransactionAction", res.data );
+        // console.log("abcd", res.data );
        
       });
     } catch (error) {

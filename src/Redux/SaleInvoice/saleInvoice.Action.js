@@ -8,6 +8,9 @@ import {
     UPDATE_SALE_INVOICE,
 } from "./saleInvoice.type";
 
+import { LIVE_URL2 } from "../config/Commen";
+
+
 export const postSaleInvoice = (creds, token) => (dispatch) => {
     const headers = {
         "token": `${token}`
@@ -34,11 +37,9 @@ export const getSaleInvoice = (token) => (dispatch) => {
     const headers = {
         "token": `${token}`
     };
-    console.log(token)
     dispatch({ type: LOADING_SALE_INVOICE });
     const url = `${LIVE_URL2}/saleinvoice/id`;
 
-   
     axios
         .get(url, { headers })
         .then((res) => {

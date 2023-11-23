@@ -2,7 +2,6 @@ import {
     DELETE_TRANSACTION,
     ERROR_TRANSACTION,
     GET_TRANSACTION,
-    GET_INDIVIDUAL_TRANSACTION,
     LOADING_TRANSACTION,
     SUCCESS_TRANSACTION,
     UPDATE_TRANSACTION,
@@ -12,7 +11,6 @@ import {
     loading: false,
     error: false,
    transactionData: [],
-   transactionIndividualData: [],
   };
   export const transactionReducer = (state = initialState, { type, payload }) => {
     switch (type) {
@@ -23,11 +21,7 @@ import {
         return { ...state, loading: false, error: false,transactionData: payload };
       }
       case GET_TRANSACTION: {
-       
         return { ...state, loading: false, error: false,transactionData: payload };
-      }
-      case GET_INDIVIDUAL_TRANSACTION: {
-        return { ...state, loading: false, error: false,transactionIndividualData: payload };
       }
       case UPDATE_TRANSACTION: {
         return { ...state, loading: false, error: false,transactionData: payload };

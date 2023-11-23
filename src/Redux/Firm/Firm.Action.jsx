@@ -21,7 +21,7 @@ export const getFirmData = (token) => (dispatch) => {
     )
         .then(res => {
             dispatch({ type: SUCCESS_GET_FIRM_REGISTER, payload: res.data });
-            console.log("firm data get",res.data);
+            // console.log("firm data get",res.data);
         })
         .catch(err => {
             dispatch({ type: ERROR_FIRM_REGISTER, payload: err });
@@ -32,9 +32,9 @@ export const getFirmData = (token) => (dispatch) => {
 
 
 export const firmRegisterAction = (formData, token) => (dispatch) => {
-    console.log(formData, "token", token);
+    // console.log(formData, "token", token);
     const headers = {
-        // 'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
         'token': `${token}`
     };
 
