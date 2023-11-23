@@ -8,6 +8,7 @@ import PurchaseReport from './PurchaseReport'
 import AllTransaction from './AllTransaction'
 import BillWiseProfit from './BillWiseProfit'
 import CashFlow from './CashFlow'
+import PartyStatement from './PartyStatement'
 
 import DayBook from './DayBook'
 
@@ -72,6 +73,8 @@ const Reports = () => {
                 return <SaleReports />
             case 'PURCHASE_REPORT':
                 return <PurchaseReport />
+                case 'PARTY_STATEMENT':
+                    return <PartyStatement/>
             case 'ALL_TRANSACTION':
                 return <AllTransaction />
             case 'CASHFLOW':
@@ -86,6 +89,7 @@ const Reports = () => {
                 return <GSTR_2 />
             case 'GSTR-3B':
                 return <GSTR_3B />
+
         }
     }
 
@@ -128,7 +132,7 @@ const Reports = () => {
                                 <option value='SALE_SUMMARY_BY_HSN'>Sale Summary by HSN</option>
                             </optgroup>
                             <optgroup label='Party Reports'>
-                                <option>Party Statement</option>
+                            <option value='PARTY_STATEMENT'>Party Statement</option>
                                 <option>Party Wise Profit & Loss</option>
                                 <option>All Parties Report</option>
                                 <option>Party Report by Items</option>

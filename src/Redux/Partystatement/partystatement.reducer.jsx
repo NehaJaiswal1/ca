@@ -36,6 +36,11 @@ export const partystatementReducer = (state = initialState, { type, payload }) =
           error: null
         };
 
+    //     FETCH_DATA_REQUEST
+    //     FETCH_DATA_FAILURE
+    // case FETCH_DATA_REQUEST: 
+    // return {...state, loading: false, partyId: payload, error: null};
+
     default:
       return state;
   }

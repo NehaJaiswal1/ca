@@ -47,7 +47,7 @@ const PartyStatement = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchData, setSearchData] = useState(tableData);
   let [selectedPartyId, setSelectedPartyId] = useState([]);
- 
+  let [partyId, setPartyId] = useState('');
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
@@ -60,19 +60,19 @@ const PartyStatement = () => {
     navigate('/individual-report')
   }
 
- 
+
 
   const [startDate, setStartDate] = useState(''); // State to store start date
   const [endDate, setEndDate] = useState('');
   const { firmId } = useSelector((store) => store.FirmRegistration);
- 
+
   console.log("firmid - 1-", firmId)
- 
 
-  // let partyId = useSelector((store) => store.partystatementReducer.partyId);
-  // console.log("getAllData data ", partyId)
+  //  token login
+  const userDetails = JSON.parse(sessionStorage.getItem("companyDetails")) ?
+    JSON.parse(sessionStorage.getItem("companyDetails")) : null
 
-  
+
   let getpartydata = useSelector((store) => store.partiesReducer.getPartiesData);
   console.log("get party data ", getpartydata)
 
@@ -80,67 +80,106 @@ const PartyStatement = () => {
 
   const dispatch = useDispatch();
 
-  const handleViewClick = (invoiceId) => {
-    navigate(`/party/${invoiceId}`);
-  };
+  // const handleViewClick = (partyId) => {
+  //   navigate(`/party/${partyId}`);
+  // };
 
- 
- 
-  console.log("selectedPartyId------", selectedPartyId)
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const userDetails = JSON.parse(sessionStorage.getItem("companyDetails")) || {};
-        const { token } = userDetails;
-        console.log("user details", userDetails)
-  
-        // console.log("hi p 1",selectedPartyId)
-        // console.log("hi f 1",firmId)
-        // if (firmId && selectedPartyId) {
-        //   console.log("hi p 2",selectedPartyId)
-        //   console.log("hi f ",firmId)
-        //  const getdisplaydata =  dispatch(getTransactions({ token, firmId: firmId, partyId: selectedPartyId }));
-        //  console.log("display data", getdisplaydata)
-          
-        // } else {
-        //   console.error("Party ID is undefined.");
-        // }
-      } catch (error) {
-        // Handle errors
-        console.error("Error fetching party statement:", error);
-      }
-    };
-  
-    fetchData();
-  }, [firmId]);
 
-   
+
+  // console.log("selectedPartyId", selectedPartyId)
+
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const userDetails = JSON.parse(sessionStorage.getItem("companyDetails")) || {};
+  //       const { token } = userDetails;
+  //       console.log("user details", userDetails)
+
+  //       // console.log("hi p 1",selectedPartyId)
+  //       // console.log("hi f 1",firmId)
+  //       // if (firmId && selectedPartyId) {
+  //       //   console.log("hi p 2",selectedPartyId)
+  //       //   console.log("hi f ",firmId)
+  //       //  const getdisplaydata =  dispatch(getTransactions({ token, firmId: firmId, partyId: selectedPartyId }));
+  //       //  console.log("display data", getdisplaydata)
+
+  //       // } else {
+  //       //   console.error("Party ID is undefined.");
+  //       // }
+  //     } catch (error) {
+  //       // Handle errors
+  //       console.error("Error fetching party statement:", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [firmId]);
+
+
+  // const handlePartySelectChange = (event) => {
+  //   event.preventDefault();
+  //   // partyId = selectedPartyId = event.target.value;
+  //   selectedPartyId = event.target.value;
+  //   setPartyId(selectedPartyId); // Update partyId using the state setter
+  //   dispatch(setPartyId(selectedPartyId));
+  //   // dispatch(setPartyId(partyId));
+  //   const { token } = userDetails;
+  //   // checking data is getting properly
+  //   console.log("Token:", token);
+  //   console.log("Firm ID:", firmId);
+  //   console.log("Party ID:", partyId);
+
+  //   // if (firmId && partyId) {
+  //   //   const { token } = userDetails;
+  //   //   dispatch(getTransactions(token, firmId, partyId));
+  //   // } else {
+  //   //   console.error("Party ID or Firm ID is undefined.");
+  //   // }
+  // };
+
+
   const handlePartySelectChange = (event) => {
-    selectedPartyId = event.target.value;
-   console.log("event",selectedPartyId)
-
-   setSelectedPartyId(selectedPartyId);
+    event.preventDefault();
+    const selectedPartyId = event.target.value;
+    setPartyId(selectedPartyId); // Update partyId using the state setter
   
-   dispatch(setPartyId(selectedPartyId));
-
-
-  //  const { token } = userDetails;
-  //  console.log("user details", userDetails)
-
-   console.log("hi p 1",selectedPartyId)
-   console.log("hi f 1",firmId)
-   if (firmId && selectedPartyId) {
-     console.log("hi p 2",selectedPartyId)
-     console.log("hi f 2",firmId)
-      dispatch(getTransactions({  firmId: firmId, partyId: selectedPartyId }));
-    
-     
-   } else {
-     console.error("Party ID is undefined.");
-   }
- };
- 
+    const { token } = userDetails;
+    console.log("Token:", token);
+    console.log("Firm ID:", firmId);
+    console.log("Party ID:", selectedPartyId);
   
+    dispatch({ type: 'SET_PARTY_ID', payload: selectedPartyId }); // Dispatch the action directly
+  
+    if (firmId && selectedPartyId) {
+      dispatch(getTransactions(token, firmId, selectedPartyId));
+    } else {
+      console.error("Party ID or Firm ID is undefined.");
+    }
+  };
+  
+  
+
+
+  useEffect(() => {
+    // Log data to verify it's getting properly
+    console.log("Token 1:", userDetails.token);
+    console.log("Firm ID 1:", firmId);
+    console.log("Party ID 1:", partyId);
+
+    // Check if firmId and partyId are defined
+    if (firmId && partyId) {
+      const { token } = userDetails;
+      dispatch(getTransactions(token, firmId, partyId));
+    } else {
+      console.error("Party ID or Firm ID is undefined.");
+    }
+  }, [firmId, partyId, userDetails.token, dispatch]);
+
+  // const transactions = useSelector((state) => state.partiesReducer.transactions);
+  // console.log("transactions", transactions)
+
+
   return (
     <>
 
@@ -191,24 +230,24 @@ const PartyStatement = () => {
             </InputRightAddon>
           </InputGroup>
           {/* Parties dropdown */}
-      <Select
-        mt="-1"
-        ml="-10"
-        width="35%"
-        size="sm"
-        rightIcon={<ChevronDownIcon />}
-        defaultValue={selectedPartyId}
-        onChange={handlePartySelectChange}
-        placeholder="Select Parties"
-      >
-        <optgroup label=" Parties Listed ">
-          {getpartydata.map((party) => (
-            <option key={party._id} value={party._id}>
-              {party.partyName}
-            </option>
-          ))}
-        </optgroup>
-      </Select>
+          <Select
+            mt="-1"
+            ml="-10"
+            width="35%"
+            size="sm"
+            rightIcon={<ChevronDownIcon />}
+            defaultValue={selectedPartyId}
+            onChange={handlePartySelectChange}
+            placeholder="Select Parties"
+          >
+            <optgroup label=" Parties Listed ">
+              {getpartydata.map((party) => (
+                <option key={party._id} value={party._id}>
+                  {party.partyName}
+                </option>
+              ))}
+            </optgroup>
+          </Select>
         </Flex>
 
         <TableContainer m='2' margin='15px'
@@ -261,51 +300,51 @@ const PartyStatement = () => {
             height='100%'
             width='100%'
             p='2'>
-              <Box>
-            <Text textAlign='left' textColor= 'black' fontSize= '20px' fontWeight= 'semibold' mt='3' >Party Statement Summary</Text> <br />
+            <Box>
+              <Text textAlign='left' textColor='black' fontSize='20px' fontWeight='semibold' mt='3' >Party Statement Summary</Text> <br />
             </Box>
             <Box>
-            <Flex justifyContent='space-between'>
-              <Box >
-                <Flex>
-                  <Text textColor= 'black' fontSize= '15px' fontWeight= 'semibold'>Total Sale : </Text>
-                  <Text textColor= 'black' fontSize= '15px' fontWeight= 'semibold' >  ₹{}</Text>
-                </Flex>
-              </Box>
-              <Box>
-                <Flex>
-                  <Text textColor= 'black' fontSize= '15px' fontWeight= 'semibold'>Total Purchase :  </Text>
-                  <Text textColor= 'black' fontSize= '15px' fontWeight= 'semibold' >  ₹ { }</Text>
-                </Flex>
-              </Box>
-              <Box>
-                <Flex>
-                  <Text textColor= 'black' fontSize= '15px' fontWeight= 'semibold' marginRight= '30'>Total Expense : </Text>
-                  <Text textColor= 'black' fontSize= '15px' fontWeight= 'semibold'> ₹ { }</Text>
-                </Flex>
-              </Box>
-
-            </Flex>
-            <Flex justifyContent= 'space-between'>
-              <Box>
-                <Flex>
-                  <Text textColor= 'black' fontSize= '15px' fontWeight= 'semibold'>Total Money-In :  </Text>
-                  <Text textColor= 'black' fontSize= '15px' fontWeight= 'semibold'>₹{ }</Text>
-                </Flex>
-              </Box>
-              <Box>
-                <Flex>
-                  <Text textColor= 'black' fontSize= '15px' fontWeight= 'semibold' marginRight= '30'>Total Money-out : </Text>
-                  <Text textColor= 'black' fontSize= '15px' fontWeight= 'semibold' >₹{ }</Text>
-                </Flex>
-              </Box>
-            </Flex>
-            </Box>
-            <Box>
+              <Flex justifyContent='space-between'>
+                <Box >
                   <Flex>
-                  <Text textColor= 'black' fontSize= '15px' fontWeight= 'semibold'>Total Receiveable :  </Text>
-                  <Text textColor= 'black' fontSize= '15px' fontWeight= 'semibold'>₹{ }</Text>
+                    <Text textColor='black' fontSize='15px' fontWeight='semibold'>Total Sale : </Text>
+                    <Text textColor='black' fontSize='15px' fontWeight='semibold' >  ₹{ }</Text>
                   </Flex>
+                </Box>
+                <Box>
+                  <Flex>
+                    <Text textColor='black' fontSize='15px' fontWeight='semibold'>Total Purchase :  </Text>
+                    <Text textColor='black' fontSize='15px' fontWeight='semibold' >  ₹ { }</Text>
+                  </Flex>
+                </Box>
+                <Box>
+                  <Flex>
+                    <Text textColor='black' fontSize='15px' fontWeight='semibold' marginRight='30'>Total Expense : </Text>
+                    <Text textColor='black' fontSize='15px' fontWeight='semibold'> ₹ { }</Text>
+                  </Flex>
+                </Box>
+
+              </Flex>
+              <Flex justifyContent='space-between'>
+                <Box>
+                  <Flex>
+                    <Text textColor='black' fontSize='15px' fontWeight='semibold'>Total Money-In :  </Text>
+                    <Text textColor='black' fontSize='15px' fontWeight='semibold'>₹{ }</Text>
+                  </Flex>
+                </Box>
+                <Box>
+                  <Flex>
+                    <Text textColor='black' fontSize='15px' fontWeight='semibold' marginRight='30'>Total Money-out : </Text>
+                    <Text textColor='black' fontSize='15px' fontWeight='semibold' >₹{ }</Text>
+                  </Flex>
+                </Box>
+              </Flex>
+            </Box>
+            <Box>
+              <Flex>
+                <Text textColor='black' fontSize='15px' fontWeight='semibold'>Total Receiveable :  </Text>
+                <Text textColor='black' fontSize='15px' fontWeight='semibold'>₹{ }</Text>
+              </Flex>
             </Box>
           </Box>
         </Flex>

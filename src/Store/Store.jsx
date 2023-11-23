@@ -16,7 +16,8 @@ import { purchaseReturnReducer } from "../Redux/PurchaseReturn/purchaseReturn.re
 import { saleReportReducer } from "../Redux/SaleReport/saleReport.reducer";
 import { purchaseReportReducer } from "../Redux/PurchaseReport/PurchaseReport.reducer";
 import { reportReducer } from "../Redux/Report/Report.reducer";
-
+import { partystatementReducer } from "../Redux/Partystatement/partystatement.reducer";
+import { partyProfitLossReducer } from "../Redux/PartyProfitLoss/partyprofitloss.reducer";
 
 
 
@@ -26,7 +27,9 @@ const rootReducer = combineReducers({
     Profile: Profile_Reducer,
     FirmRegistration: Firm_Reducer,
     Vendor: Vendor_Reducer,
+   
     partiesReducer: partiesReducer,
+    partystatementReducer: partystatementReducer,
     stockReducer: stockReducer,
     categoryReducer: categoryReducer,
     invoiceReducer: invoiceReducer,
@@ -37,6 +40,10 @@ const rootReducer = combineReducers({
     saleReportReducer: saleReportReducer,
     purchaseReportReducer: purchaseReportReducer,
     reportReducer: reportReducer
+  
+    // partyProfitLossReducer: partyProfitLossReducer,
+    // allpartiesReducer: allpartiesReducer,
+    // partyReportByReducer: partyReportByReducer,
 
 })
 export const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
